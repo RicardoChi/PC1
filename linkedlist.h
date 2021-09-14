@@ -1,48 +1,61 @@
-#ifndef __LINKEDLIST_H__
-#define __LINKEDLIST_H__
+#ifndef __LINKEDLIST_h__
+#define __LINKEDLIST_h__
+
 using namespace std;
 
 template <typename R>
 
 class LinkedList 
 {
-  class Nodo
-  {
+  class Node{
     private:
-    R       dato;
-    Nodo    *siguiente;
-
+      R     mdata;
+      Node  *mSgte;
     public:
-    Nodo (Nodo *Sgte=nullptr): siguiente(Sgte)
-    {}
-    void setSgte(Nodo *Sgte)  {siguiente=Sgte; }
-    Nodo *getSgte()            {return siguiente; }
+    Node(R data, Node *pSgte=nullptr ):mdata (data), *mSgte(pSgte)
+    {};
+    R getData()                 {return mdata;}
+    R &getDataRef()             {return mdata;}
+    void setmSgte(Node *pSgte)  {mSgte=pSgte; }
+    Node *getpNext()            {return mSgte;}
   };
-  private:
-  Nodo *cabeza=nullptr;
-  Nodo *cola=nullptr;
-  tamano  ftamano=0;
-  public:
-  void insertarfcola(R elemento);
-  tamano size() const {return ftamano;}
-  bool empty() const  {return size()==0;}
 
-  ostream & print(ostream &os);
-  R &operator[](tamano pos);
-}; 
+  private:
+    Node *cabeza=nullptr;
+         *cola=nullptr;
+    tam_r   tam=0;
+  public:
+    void insertarcabeza(R elemento);
+    void insertarcola (R elemento);
+    tam_r size() const {return tam;}
+    bool empty() const {return size()==0;}
+  ostream & print (ostream &os);
+};
 
 template <typename R>
-void LinkedList<R>::insertarfcola(R elemento)
-{
-  Nodo *nuevo= new Nodo(elemento);
-  if(cola)
-  {
-    cola-> setSgte(nuevo);
-  }
-  cola=nuevo;
-  if(!cabeza){
-    cabeza=nuevo;
-  }
-  ftamano++;
+void LinkedList<R>::insertarcabeza(R elemento){
+  Node  *pNuevo= new Node(elemento,cabeza);
+  cabeza=pNuevo;
+  tam++;
 }
-#endif 
+template <typename R>
+void LinkedList<R>::insertarcola(R elemento){
+  Node *pNuevo= new Node(elemento, cabeza);
+    if(cola)
+    {cola->setmSgte(pNuevo);
+    }
+    cola=pNuevo;
+    if(!cabeza){
+      cabeza=pNuevo;
+    }tam++;
+}
+template <typename R>
+ostream &LinkedList<T>::print(ostream &os){
+  Node *pnode= cabeza;
+  while(pnode){
+    os<<pnode<<getData()<<",";
+    pnode= pnode->getpNext();}
+    return os;
+
+  }
+#endif
